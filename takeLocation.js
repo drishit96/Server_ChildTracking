@@ -34,29 +34,31 @@ app.listen(8089, function() {
 
 function sendNotification() {
     //send notification only if the id exists in database
-    var ref = db.ref("students/randomid");
+    var ref = db.ref("students/" + id);
     ref.once("value", function(snapshot) {
         var data = snapshot.val();
         console.log(data);
-        topic = id;
-        var payload = {
-            notification: {
-                title: "Child Tracking System",
-                body: "Location of child received"
-            },
-            data: {
-                latitude: latitude,
-                longitude: longitude
-            }
-        };
-        admin.messaging().sendToTopic(topic, payload)
-            .then(function(response) {
-                console.log(topic);
-                console.log(payload);
-                console.log("Successfully sent message:", response);
-            })
-            .catch(function(error) {
-                console.log("Error sending message:", error);
-            });
+        if (data != null) {
+            topic = id;
+            var payload = {
+                notification: {
+                    title: "Child Tracking System",
+                    body: "Location of child received"
+                },
+                data: {
+                    latitude: latitude,
+                    longitude: longitude
+                }
+            };
+            admin.messaging().sendToTopic(topic, payload)
+                .then(function(response) {
+                    console.log(topic);
+                    console.log(payload);
+                    console.log("Successfully sent message:", response);
+                })
+                .catch(function(error) {
+                    console.log("Error sending message:", error);
+                });
+        }
     });
 }
