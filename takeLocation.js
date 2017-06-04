@@ -19,13 +19,28 @@ var topic = id;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//Handles requests to localhost:8089/location
-app.post('/location', function(request, response) {
+//Handles requests to localhost:8089/childLocation
+app.post('/childLocation', function(request, response) {
     id = request.body.id;
     latitude = request.body.latitude;
     longitude = request.body.longitude;
     sendNotification();
-    response.send('Location received of ID: "' + request.body.id + '".');
+    response.send('Location received of Student ID: "' + request.body.id + '".');
+});
+
+//Handles requests to localhost:8089/busLocation
+app.post('/busLocation', function(request, response) {
+    id = request.body.id;
+    latitude = request.body.latitude;
+    longitude = request.body.longitude;
+
+    //Store this location in database
+    db.ref('buses/' + id + "/location").set({
+        lat: latitude,
+        lon: longitude
+    });
+
+    response.send('Location received of Bus ID: "' + request.body.id + '".');
 });
 
 app.listen(8089, function() {
