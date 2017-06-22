@@ -20,19 +20,19 @@ var topic = id;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Handles requests to localhost:8089/childLocation
-app.post('/childLocation', function(request, response) {
-    id = request.body.id;
-    latitude = request.body.latitude;
-    longitude = request.body.longitude;
+app.get('/childLocation', function(request, response) {
+    id = request.query['id'];
+    latitude = request.query['latitude'];
+    longitude = request.query['longitude'];
     sendNotification();
-    response.send('Location received of Student ID: "' + request.body.id + '".');
+    response.send('Location received of Student ID: "' + request.query['id'] + '".');
 });
 
 //Handles requests to localhost:8089/busLocation
-app.post('/busLocation', function(request, response) {
-    id = request.body.id;
-    latitude = request.body.latitude;
-    longitude = request.body.longitude;
+app.get('/busLocation', function(request, response) {
+    id = request.query['id'];
+    latitude = request.query['latitude'];
+    longitude = request.query['longitude'];
 
     //Store this location in database
     db.ref('buses/' + id + "/location").set({
@@ -40,7 +40,7 @@ app.post('/busLocation', function(request, response) {
         lon: longitude
     });
 
-    response.send('Location received of Bus ID: "' + request.body.id + '".');
+    response.send('Location received of Bus ID: "' + request.query['id'] + '".');
 });
 
 app.listen(8089, function() {
