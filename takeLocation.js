@@ -20,27 +20,34 @@ var topic = id;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Handles requests to localhost:8089/childLocation
-app.get('/childLocation', function(request, response) {
-    id = request.query['id'];
-    latitude = request.query['latitude'];
-    longitude = request.query['longitude'];
-    sendNotification();
-    response.send('Location received of Student ID: "' + request.query['id'] + '".');
+app.post('/childLocation', function(request, response) {
+    id = request.body.id;
+
+    if (request.body.latitude != '' && request.body.longitude != '') {
+        latitude = request.body.latitude;
+        longitude = request.body.longitude;
+
+        sendNotification();
+        response.send('Location received of Student ID: "' + request.body.id + '".');
+    }
 });
 
 //Handles requests to localhost:8089/busLocation
-app.get('/busLocation', function(request, response) {
-    id = request.query['id'];
-    latitude = request.query['latitude'];
-    longitude = request.query['longitude'];
+app.post('/busLocation', function(request, response) {
+    id = request.body.id;
 
-    //Store this location in database
-    db.ref('buses/' + id + "/location").set({
-        lat: latitude,
-        lon: longitude
-    });
+    if (request.body.latitude != '' && request.body.longitude != '') {
+        latitude = request.body.latitude;
+        longitude = request.body.longitude;
 
-    response.send('Location received of Bus ID: "' + request.query['id'] + '".');
+        //Store this location in database
+        db.ref('buses/' + id + "/location").set({
+            lat: latitude,
+            lon: longitude
+        });
+
+        response.send('Location received of Bus ID: "' + request.body.id + '".');
+    }
 });
 
 app.listen(8089, function() {
@@ -51,14 +58,14 @@ function sendNotification() {
     //send notification only if the id exists in database
     var ref = db.ref("students/" + id);
     ref.once("value", function(snapshot) {
-        var data = snapshot.val();
-        console.log(data);
-        if (data != null) {
+        var studentData = snapshot.val();
+        console.log(studentData);
+        if (studentData != null) {
             topic = id;
             var payload = {
                 notification: {
                     title: "Child Tracking System",
-                    body: "Location of child received"
+                    body: "Location of " + studentData.name + " received"
                 },
                 data: {
                     latitude: latitude,
