@@ -2,7 +2,7 @@
   "name": "child-tracking-system",
   "version": "1.0.0",
   "description": "Track a child while he/she is travelling in the school bus",
-  "main": "takeLocation.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
