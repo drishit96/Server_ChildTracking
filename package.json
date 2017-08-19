@@ -1,6 +1,9 @@
 {
   "name": "child-tracking-system",
   "version": "1.0.0",
+  "engines": {
+    "node": "6.11.2"
+  },
   "description": "Track a child while he/she is travelling in the school bus",
   "main": "server.js",
   "scripts": {
