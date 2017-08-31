@@ -67,7 +67,33 @@ app.post('/busLocation', function(request, response) {
     }
 });
 
-var server_port = process.env.PORT || 8080;
+//Handles requests to /busStatus
+app.post('/busStatus', function(request, response) {
+    id = request.body.id;
+    
+    //Check if the status of the bus is of boolean type
+    if (request.body.isActive == 'true' || request.body.isActive == 'false') {
+        var ref = db.ref("buses/" + id + "/isActive");
+        ref.once("value", function(snapshot) {
+
+            //Check if the bus data is present in database
+            if (snapshot.val() != null) {
+
+                //If present, then update the bus status
+                ref.set(request.body.isActive);
+                response.send('200 OK');
+            }
+            else {
+                response.send('400 Bad Request');
+            }
+        });
+    }
+    else {
+        response.send('400 Bad Request');
+    }
+});
+
+var server_port = process.env.PORT || 8085;
 app.listen(server_port, function () {
     console.log( "Listening on " + server_port  );
 });
