@@ -40,13 +40,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/childLocation', function(request, response) {
     id = request.body.id;
 
-    if (request.body.latitude != '' && request.body.longitude != '') {
+//     if (request.body.latitude != '' && request.body.longitude != '') {
         latitude = request.body.latitude;
         longitude = request.body.longitude;
 
         sendNotification();
         response.send('Location received of Student ID: "' + request.body.id + '".');
-    }
+//     }
 });
 
 //Handles requests to localhost:8089/busLocation
