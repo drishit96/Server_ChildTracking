@@ -112,8 +112,8 @@ function sendNotification() {
                     body: "Location of " + studentData.name + " received"
                 },
                 data: {
-                    latitude: latitude,
-                    longitude: longitude
+                    latitude: "19.044392",
+                    longitude: "72.820493"
                 }
             };
             admin.messaging().sendToTopic(topic, payload)
